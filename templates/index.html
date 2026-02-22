@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Syntax Analyzer</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+          sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        opacity: 0.9;
+      }
+
+      .main-content {
+        padding: 30px;
+      }
+
+      .input-section {
+        margin-bottom: 30px;
+      }
+
+      .language-selector {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .language-selector label {
+        font-weight: 600;
+        color: #555;
+      }
+
+      .language-selector select {
+        padding: 10px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 5px;
+        font-size: 16px;
+        background: white;
+        cursor: pointer;
+        transition: border-color 0.3s;
+      }
+
+      .language-selector select:hover {
+        border-color: #667eea;
+      }
+
+      .language-selector select:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .code-input {
+        width: 100%;
+        min-height: 300px;
+        padding: 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 5px;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.5;
+        resize: vertical;
+        transition: border-color 0.3s;
+      }
+
+      .code-input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: #f0f0f0;
+        color: #555;
+      }
+
+      .file-input {
+        display: none;
+      }
+
+      .file-label {
+        padding: 12px 30px;
+        background: #f0f0f0;
+        color: #555;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        display: inline-block;
+      }
+
+      .file-label:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .results-section {
+        margin-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        padding-top: 30px;
+      }
+
+      .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .results-header h2 {
+        color: #555;
+      }
+
+      .summary {
+        display: flex;
+        gap: 20px;
+      }
+
+      .summary-item {
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: 600;
+      }
+
+      .summary-item.errors {
+        background: #fee;
+        color: #c33;
+      }
+
+      .summary-item.warnings {
+        background: #ffeeba;
+        color: #856404;
+      }
+
+      .error-list {
+        list-style: none;
+      }
+
+      .error-item {
+        background: #f9f9f9;
+        border-left: 4px solid;
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 0 5px 5px 0;
+      }
+
+      .error-item.error {
+        border-left-color: #c33;
+      }
+
+      .error-item.warning {
+        border-left-color: #ffc107;
+      }
+
+      .error-line {
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 5px;
+      }
+
+      .error-message {
+        color: #333;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 30px;
+      }
+
+      .loading.active {
+        display: block;
+      }
+
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .filename {
+        background: #f0f0f0;
+        padding: 5px 10px;
+        border-radius: 3px;
+        display: inline-block;
+        margin-left: 10px;
+        font-size: 14px;
+      }
+
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 2em;
+        }
+
+        .button-group {
+          flex-direction: column;
+        }
+
+        .btn,
+        .file-label {
+          width: 100%;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Code Syntax Analyzer</h1>
+        <p>Paste your code below to check for syntax errors and warnings</p>
+      </div>
+
+      <div class="main-content">
+        <div class="input-section">
+          <div class="language-selector">
+            <label for="language">Language:</label>
+            <select id="language">
+              <option value="auto">Auto-detect</option>
+              <option value="python">Python</option>
+              <option value="java">Java</option>
+              <option value="cpp">C++</option>
+              <option value="javascript">JavaScript</option>
+              <option value="html">HTML</option>
+            </select>
+          </div>
+
+          <textarea
+            id="codeInput"
+            class="code-input"
+            placeholder="Paste your code here..."
+          ></textarea>
+
+          <div class="button-group">
+            <button class="btn btn-primary" onclick="analyzeCode()">
+              Analyze Code
+            </button>
+            <button class="btn btn-secondary" onclick="clearCode()">
+              Clear
+            </button>
+            <label for="fileInput" class="file-label">Upload File</label>
+            <input
+              type="file"
+              id="fileInput"
+              class="file-input"
+              accept=".py,.java,.cpp,.js,.html,.txt"
+              onchange="handleFileUpload(this)"
+            />
+          </div>
+        </div>
+
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          <p>Analyzing your code...</p>
+        </div>
+
+        <div class="results-section" id="results" style="display: none">
+          <div class="results-header">
+            <h2>Analysis Results</h2>
+            <div class="summary" id="summary"></div>
+          </div>
+
+          <div id="errorList"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      async function analyzeCode() {
+        const code = document.getElementById("codeInput").value;
+        const language = document.getElementById("language").value;
+
+        if (!code.trim()) {
+          alert("Please enter some code to analyze.");
+          return;
+        }
+
+        showLoading();
+
+        try {
+          const response = await fetch("http://127.0.0.1:5000/analyze", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ code, language }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            displayResults(data);
+          } else {
+            alert("Error: " + data.error);
+          }
+        } catch (error) {
+          alert("Error connecting to server: " + error.message);
+        } finally {
+          hideLoading();
+        }
+      }
+
+      async function handleFileUpload(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        showLoading();
+
+        try {
+          const response = await fetch("http://127.0.0.1:5000/analyze-file", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            document.getElementById("codeInput").value =
+              `// File: ${data.filename}\n// Detected language: ${data.language}\n\n${data.code || ""}`;
+            displayResults(data);
+          } else {
+            alert("Error: " + data.error);
+          }
+        } catch (error) {
+          alert("Error uploading file: " + error.message);
+        } finally {
+          hideLoading();
+          input.value = ""; // Reset file input
+        }
+      }
+
+      function displayResults(data) {
+        const results = document.getElementById("results");
+        const summary = document.getElementById("summary");
+        const errorList = document.getElementById("errorList");
+
+        // Update summary
+        summary.innerHTML = `
+                <div class="summary-item errors">Errors: ${data.summary.error_count}</div>
+                <div class="summary-item warnings">Warnings: ${data.summary.warning_count}</div>
+            `;
+
+        // Display errors and warnings
+        let html = '<ul class="error-list">';
+
+        // Show detected language
+        html += `<li class="error-item info" style="border-left-color: #667eea; background: #f0f0ff;">
+                <div class="error-line">Language detected: ${data.language}</div>
+            </li>`;
+
+        // Show errors
+        data.errors.forEach((error) => {
+          html += `
+                    <li class="error-item error">
+                        <div class="error-line">Line ${error.line || "?"}, Column ${error.column || "?"}</div>
+                        <div class="error-message">${error.message}</div>
+                    </li>
+                `;
+        });
+
+        // Show warnings
+        data.warnings.forEach((warning) => {
+          html += `
+                    <li class="error-item warning">
+                        <div class="error-line">Line ${warning.line || "?"}, Column ${warning.column || "?"}</div>
+                        <div class="error-message">${warning.message}</div>
+                    </li>
+                `;
+        });
+
+        if (data.errors.length === 0 && data.warnings.length === 0) {
+          html +=
+            '<li class="error-item success" style="border-left-color: #28a745; background: #f0fff0;"><div class="error-message">No syntax errors or warnings found!</div></li>';
+        }
+
+        html += "</ul>";
+        errorList.innerHTML = html;
+
+        results.style.display = "block";
+      }
+
+      function clearCode() {
+        document.getElementById("codeInput").value = "";
+        document.getElementById("results").style.display = "none";
+      }
+
+      function showLoading() {
+        document.getElementById("loading").classList.add("active");
+        document.getElementById("results").style.display = "none";
+      }
+
+      function hideLoading() {
+        document.getElementById("loading").classList.remove("active");
+      }
+    </script>
+  </body>
+</html>
