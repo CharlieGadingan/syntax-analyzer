@@ -418,47 +418,75 @@
 
         // Update summary
         summary.innerHTML = `
-                <div class="summary-item errors">Errors: ${data.summary.error_count}</div>
-                <div class="summary-item warnings">Warnings: ${data.summary.warning_count}</div>
-            `;
+        <div class="summary-item errors">Errors: ${data.summary.error_count}</div>
+        <div class="summary-item warnings">Warnings: ${data.summary.warning_count}</div>
+        <div class="summary-item" style="background: #e3f2fd;">Language: ${data.language}</div>
+    `;
 
         // Display errors and warnings
         let html = '<ul class="error-list">';
 
-        // Show detected language
+        // Show detected language info
         html += `<li class="error-item info" style="border-left-color: #667eea; background: #f0f0ff;">
-                <div class="error-line">Language detected: ${data.language}</div>
-            </li>`;
+        <div class="error-line">📊 Analysis Summary</div>
+        <div class="error-message">Language: ${data.language}</div>
+        <div class="error-message">Total Errors: ${data.summary.error_count}</div>
+        <div class="error-message">Total Warnings: ${data.summary.warning_count}</div>
+    </li>`;
 
         // Show errors
-        data.errors.forEach((error) => {
-          html += `
-                    <li class="error-item error">
-                        <div class="error-line">Line ${error.line || "?"}, Column ${error.column || "?"}</div>
-                        <div class="error-message">${error.message}</div>
-                    </li>
-                `;
-        });
+        if (data.errors.length > 0) {
+          html += `<li class="error-item error" style="border-left-color: #c33; background: #fff0f0;">
+            <div class="error-line" style="font-size: 1.1em;">❌ ERRORS (${data.errors.length})</div>
+        </li>`;
+
+          data.errors.forEach((error, index) => {
+            html += `
+                <li class="error-item error" style="margin-left: 20px;">
+                    <div class="error-line">Error #${index + 1} - Line ${error.line || "?"}, Column ${error.column || "?"}</div>
+                    <div class="error-message" style="font-family: monospace;">${error.message}</div>
+                    <div style="font-size: 0.8em; color: #666; margin-top: 5px;">Type: ${error.type || "syntax_error"}</div>
+                </li>
+            `;
+          });
+        }
 
         // Show warnings
-        data.warnings.forEach((warning) => {
-          html += `
-                    <li class="error-item warning">
-                        <div class="error-line">Line ${warning.line || "?"}, Column ${warning.column || "?"}</div>
-                        <div class="error-message">${warning.message}</div>
-                    </li>
-                `;
-        });
+        if (data.warnings.length > 0) {
+          html += `<li class="error-item warning" style="border-left-color: #ffc107; background: #fffaf0; margin-top: 15px;">
+            <div class="error-line" style="font-size: 1.1em;">⚠️ WARNINGS (${data.warnings.length})</div>
+        </li>`;
+
+          data.warnings.forEach((warning, index) => {
+            html += `
+                <li class="error-item warning" style="margin-left: 20px; background: #fffaf0;">
+                    <div class="error-line">Warning #${index + 1} - Line ${warning.line || "?"}, Column ${warning.column || "?"}</div>
+                    <div class="error-message" style="font-family: monospace;">${warning.message}</div>
+                </li>
+            `;
+          });
+        }
 
         if (data.errors.length === 0 && data.warnings.length === 0) {
           html +=
-            '<li class="error-item success" style="border-left-color: #28a745; background: #f0fff0;"><div class="error-message">No syntax errors or warnings found!</div></li>';
+            '<li class="error-item success" style="border-left-color: #28a745; background: #f0fff0;"><div class="error-message">✨ No syntax errors or warnings found! Perfect code!</div></li>';
         }
 
         html += "</ul>";
-        errorList.innerHTML = html;
 
+        // Add raw data for debugging (optional - remove in production)
+        if (data.errors.length > 0 || data.warnings.length > 0) {
+          html += `<details style="margin-top: 20px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
+            <summary style="cursor: pointer; color: #666;">🔧 Debug: Show raw error data</summary>
+            <pre style="margin-top: 10px; font-size: 12px; overflow: auto;">${JSON.stringify(data.errors, null, 2)}</pre>
+        </details>`;
+        }
+
+        errorList.innerHTML = html;
         results.style.display = "block";
+
+        // Scroll to results
+        results.scrollIntoView({ behavior: "smooth" });
       }
 
       function clearCode() {
