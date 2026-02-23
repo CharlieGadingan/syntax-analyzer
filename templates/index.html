@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Code Syntax Analyzer</title>
+    <title>Code Syntax Analyzer - Dark Theme</title>
     <style>
       * {
         margin: 0;
@@ -15,34 +15,40 @@
         font-family:
           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
           sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #0d1117;
         min-height: 100vh;
         padding: 20px;
       }
 
       .container {
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
-        background: white;
+        background: #161b22;
         border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         overflow: hidden;
+        border: 1px solid #30363d;
       }
 
       .header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+        background: #0d1117;
+        color: #c9d1d9;
         padding: 30px;
         text-align: center;
+        border-bottom: 1px solid #30363d;
       }
 
       .header h1 {
         font-size: 2.5em;
         margin-bottom: 10px;
+        background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
 
       .header p {
         opacity: 0.9;
+        color: #8b949e;
       }
 
       .main-content {
@@ -63,44 +69,72 @@
 
       .language-selector label {
         font-weight: 600;
-        color: #555;
+        color: #c9d1d9;
       }
 
       .language-selector select {
         padding: 10px 20px;
-        border: 2px solid #e0e0e0;
-        border-radius: 5px;
+        border: 1px solid #30363d;
+        border-radius: 6px;
         font-size: 16px;
-        background: white;
+        background: #0d1117;
+        color: #c9d1d9;
         cursor: pointer;
         transition: border-color 0.3s;
       }
 
       .language-selector select:hover {
-        border-color: #667eea;
+        border-color: #58a6ff;
       }
 
       .language-selector select:focus {
         outline: none;
-        border-color: #667eea;
+        border-color: #58a6ff;
+      }
+
+      /* Code editor with line numbers */
+      .code-editor-container {
+        display: flex;
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        overflow: hidden;
+        font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        min-height: 400px;
+      }
+
+      .line-numbers {
+        padding: 20px 10px;
+        background: #0a0c10;
+        color: #6e7681;
+        text-align: right;
+        border-right: 1px solid #30363d;
+        user-select: none;
+        min-width: 50px;
+        font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        white-space: pre;
       }
 
       .code-input {
-        width: 100%;
-        min-height: 300px;
+        flex: 1;
         padding: 20px;
-        border: 2px solid #e0e0e0;
-        border-radius: 5px;
-        font-family: "Courier New", monospace;
+        background: #0d1117;
+        color: #c9d1d9;
+        border: none;
+        font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
         font-size: 14px;
-        line-height: 1.5;
+        line-height: 1.6;
         resize: vertical;
-        transition: border-color 0.3s;
+        min-height: 400px;
+        outline: none;
       }
 
       .code-input:focus {
-        outline: none;
-        border-color: #667eea;
+        background: #0a0c10;
       }
 
       .button-group {
@@ -113,7 +147,7 @@
       .btn {
         padding: 12px 30px;
         border: none;
-        border-radius: 5px;
+        border-radius: 6px;
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
@@ -124,17 +158,26 @@
 
       .btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       }
 
       .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
         color: white;
       }
 
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #2ea043 0%, #3fb950 100%);
+      }
+
       .btn-secondary {
-        background: #f0f0f0;
-        color: #555;
+        background: #21262d;
+        color: #c9d1d9;
+        border: 1px solid #30363d;
+      }
+
+      .btn-secondary:hover {
+        background: #30363d;
       }
 
       .file-input {
@@ -143,9 +186,10 @@
 
       .file-label {
         padding: 12px 30px;
-        background: #f0f0f0;
-        color: #555;
-        border-radius: 5px;
+        background: #21262d;
+        color: #c9d1d9;
+        border: 1px solid #30363d;
+        border-radius: 6px;
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
@@ -157,12 +201,13 @@
 
       .file-label:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        background: #30363d;
       }
 
       .results-section {
         margin-top: 30px;
-        border-top: 2px solid #f0f0f0;
+        border-top: 1px solid #30363d;
         padding-top: 30px;
       }
 
@@ -174,7 +219,7 @@
       }
 
       .results-header h2 {
-        color: #555;
+        color: #c9d1d9;
       }
 
       .summary {
@@ -184,18 +229,26 @@
 
       .summary-item {
         padding: 10px 20px;
-        border-radius: 5px;
+        border-radius: 6px;
         font-weight: 600;
       }
 
       .summary-item.errors {
-        background: #fee;
-        color: #c33;
+        background: rgba(248, 81, 73, 0.1);
+        color: #f85149;
+        border: 1px solid #f85149;
       }
 
       .summary-item.warnings {
-        background: #ffeeba;
-        color: #856404;
+        background: rgba(242, 211, 91, 0.1);
+        color: #f2d35b;
+        border: 1px solid #f2d35b;
+      }
+
+      .summary-item:last-child {
+        background: rgba(88, 166, 255, 0.1);
+        color: #58a6ff;
+        border: 1px solid #58a6ff;
       }
 
       .error-list {
@@ -203,29 +256,40 @@
       }
 
       .error-item {
-        background: #f9f9f9;
+        background: #0d1117;
         border-left: 4px solid;
         margin-bottom: 10px;
         padding: 15px;
-        border-radius: 0 5px 5px 0;
+        border-radius: 0 6px 6px 0;
+        border: 1px solid #30363d;
+        border-left-width: 4px;
       }
 
       .error-item.error {
-        border-left-color: #c33;
+        border-left-color: #f85149;
       }
 
       .error-item.warning {
-        border-left-color: #ffc107;
+        border-left-color: #f2d35b;
+      }
+
+      .error-item.info {
+        border-left-color: #58a6ff;
+        background: #0a0c10;
+      }
+
+      .error-item.success {
+        border-left-color: #3fb950;
       }
 
       .error-line {
         font-weight: 600;
-        color: #555;
+        color: #c9d1d9;
         margin-bottom: 5px;
       }
 
       .error-message {
-        color: #333;
+        color: #8b949e;
       }
 
       .loading {
@@ -239,8 +303,8 @@
       }
 
       .spinner {
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #667eea;
+        border: 4px solid #30363d;
+        border-top: 4px solid #58a6ff;
         border-radius: 50%;
         width: 50px;
         height: 50px;
@@ -258,12 +322,33 @@
       }
 
       .filename {
-        background: #f0f0f0;
+        background: #21262d;
+        color: #c9d1d9;
         padding: 5px 10px;
-        border-radius: 3px;
+        border-radius: 6px;
         display: inline-block;
         margin-left: 10px;
         font-size: 14px;
+        border: 1px solid #30363d;
+      }
+
+      details {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        padding: 10px;
+      }
+
+      summary {
+        color: #58a6ff;
+        cursor: pointer;
+      }
+
+      pre {
+        color: #8b949e;
+        background: #0a0c10;
+        padding: 10px;
+        border-radius: 4px;
       }
 
       @media (max-width: 768px) {
@@ -279,6 +364,17 @@
         .file-label {
           width: 100%;
           text-align: center;
+        }
+
+        .code-editor-container {
+          flex-direction: column;
+        }
+
+        .line-numbers {
+          border-right: none;
+          border-bottom: 1px solid #30363d;
+          text-align: left;
+          padding: 10px 20px;
         }
       }
     </style>
@@ -304,11 +400,16 @@
             </select>
           </div>
 
-          <textarea
-            id="codeInput"
-            class="code-input"
-            placeholder="Paste your code here..."
-          ></textarea>
+          <div class="code-editor-container">
+            <div class="line-numbers" id="lineNumbers">1</div>
+            <textarea
+              id="codeInput"
+              class="code-input"
+              placeholder="Paste your code here..."
+              oninput="updateLineNumbers()"
+              onscroll="syncScroll()"
+            ></textarea>
+          </div>
 
           <div class="button-group">
             <button class="btn btn-primary" onclick="analyzeCode()">
@@ -345,6 +446,29 @@
     </div>
 
     <script>
+      // Line numbers functionality
+      function updateLineNumbers() {
+        const textarea = document.getElementById("codeInput");
+        const lineNumbers = document.getElementById("lineNumbers");
+        const lines = textarea.value.split("\n").length;
+        let lineNumberHtml = "";
+        for (let i = 1; i <= lines; i++) {
+          lineNumberHtml += i + "\n";
+        }
+        lineNumbers.innerText = lineNumberHtml;
+      }
+
+      function syncScroll() {
+        const textarea = document.getElementById("codeInput");
+        const lineNumbers = document.getElementById("lineNumbers");
+        lineNumbers.scrollTop = textarea.scrollTop;
+      }
+
+      // Initialize line numbers on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        updateLineNumbers();
+      });
+
       async function analyzeCode() {
         const code = document.getElementById("codeInput").value;
         const language = document.getElementById("language").value;
@@ -397,8 +521,8 @@
           const data = await response.json();
 
           if (data.success) {
-            document.getElementById("codeInput").value =
-              `// File: ${data.filename}\n// Detected language: ${data.language}\n\n${data.code || ""}`;
+            document.getElementById("codeInput").value = data.code || "";
+            updateLineNumbers(); // Update line numbers after setting code
             displayResults(data);
           } else {
             alert("Error: " + data.error);
@@ -420,14 +544,14 @@
         summary.innerHTML = `
         <div class="summary-item errors">Errors: ${data.summary.error_count}</div>
         <div class="summary-item warnings">Warnings: ${data.summary.warning_count}</div>
-        <div class="summary-item" style="background: #e3f2fd;">Language: ${data.language}</div>
+        <div class="summary-item">Language: ${data.language}</div>
     `;
 
         // Display errors and warnings
         let html = '<ul class="error-list">';
 
         // Show detected language info
-        html += `<li class="error-item info" style="border-left-color: #667eea; background: #f0f0ff;">
+        html += `<li class="error-item info">
         <div class="error-line">📊 Analysis Summary</div>
         <div class="error-message">Language: ${data.language}</div>
         <div class="error-message">Total Errors: ${data.summary.error_count}</div>
@@ -436,16 +560,16 @@
 
         // Show errors
         if (data.errors.length > 0) {
-          html += `<li class="error-item error" style="border-left-color: #c33; background: #fff0f0;">
-            <div class="error-line" style="font-size: 1.1em;">❌ ERRORS (${data.errors.length})</div>
+          html += `<li class="error-item error">
+            <div class="error-line">❌ ERRORS (${data.errors.length})</div>
         </li>`;
 
           data.errors.forEach((error, index) => {
             html += `
                 <li class="error-item error" style="margin-left: 20px;">
                     <div class="error-line">Error #${index + 1} - Line ${error.line || "?"}, Column ${error.column || "?"}</div>
-                    <div class="error-message" style="font-family: monospace;">${error.message}</div>
-                    <div style="font-size: 0.8em; color: #666; margin-top: 5px;">Type: ${error.type || "syntax_error"}</div>
+                    <div class="error-message">${error.message}</div>
+                    <div style="font-size: 0.8em; color: #6e7681; margin-top: 5px;">Type: ${error.type || "syntax_error"}</div>
                 </li>
             `;
           });
@@ -453,15 +577,15 @@
 
         // Show warnings
         if (data.warnings.length > 0) {
-          html += `<li class="error-item warning" style="border-left-color: #ffc107; background: #fffaf0; margin-top: 15px;">
-            <div class="error-line" style="font-size: 1.1em;">⚠️ WARNINGS (${data.warnings.length})</div>
+          html += `<li class="error-item warning" style="margin-top: 15px;">
+            <div class="error-line">⚠️ WARNINGS (${data.warnings.length})</div>
         </li>`;
 
           data.warnings.forEach((warning, index) => {
             html += `
-                <li class="error-item warning" style="margin-left: 20px; background: #fffaf0;">
+                <li class="error-item warning" style="margin-left: 20px;">
                     <div class="error-line">Warning #${index + 1} - Line ${warning.line || "?"}, Column ${warning.column || "?"}</div>
-                    <div class="error-message" style="font-family: monospace;">${warning.message}</div>
+                    <div class="error-message">${warning.message}</div>
                 </li>
             `;
           });
@@ -469,29 +593,28 @@
 
         if (data.errors.length === 0 && data.warnings.length === 0) {
           html +=
-            '<li class="error-item success" style="border-left-color: #28a745; background: #f0fff0;"><div class="error-message">✨ No syntax errors or warnings found! Perfect code!</div></li>';
+            '<li class="error-item success"><div class="error-message">✨ No syntax errors or warnings found! Perfect code!</div></li>';
         }
 
         html += "</ul>";
 
-        // Add raw data for debugging (optional - remove in production)
+        // Add raw data for debugging
         if (data.errors.length > 0 || data.warnings.length > 0) {
-          html += `<details style="margin-top: 20px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
-            <summary style="cursor: pointer; color: #666;">🔧 Debug: Show raw error data</summary>
-            <pre style="margin-top: 10px; font-size: 12px; overflow: auto;">${JSON.stringify(data.errors, null, 2)}</pre>
+          html += `<details>
+            <summary>🔧 Debug: Show raw error data</summary>
+            <pre>${JSON.stringify(data.errors, null, 2)}</pre>
         </details>`;
         }
 
         errorList.innerHTML = html;
         results.style.display = "block";
-
-        // Scroll to results
         results.scrollIntoView({ behavior: "smooth" });
       }
 
       function clearCode() {
         document.getElementById("codeInput").value = "";
         document.getElementById("results").style.display = "none";
+        updateLineNumbers(); // Reset line numbers
       }
 
       function showLoading() {
