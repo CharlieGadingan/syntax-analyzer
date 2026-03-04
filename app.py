@@ -49,6 +49,12 @@ repo_analyzer = RepositoryAnalyzer()
 # Store task status in memory (replace with Redis in production)
 task_status = {}
 
+# Store assignment feedback (in production, use a database)
+assignment_feedback = {}
+
+# Store cloned repo paths for file access
+repo_paths = {}
+
 def run_repo_analysis(task_id, repo_url, branch, options):
     """Run repository analysis in background thread"""
     try:
@@ -247,6 +253,236 @@ def supported_languages():
         'languages': list(analyzers.keys()),
         'extensions': repo_analyzer.SUPPORTED_EXTENSIONS
     })
+
+@app.route('/clone-repo', methods=['POST'])
+def clone_repo():
+    """Clone a repository and return file list"""
+    try:
+        data = request.get_json()
+        repo_url = data.get('url')
+        branch = data.get('branch', 'main')
+        
+        if not repo_url:
+            return jsonify({'error': 'No repository URL provided'}), 400
+        
+        # Create unique ID for this repo session
+        session_id = str(uuid.uuid4())[:8]
+        
+        # Clone repository
+        repo_path, repo_info = repo_analyzer.clone_repository(repo_url, branch)
+        
+        # Store the path for this session
+        repo_paths[session_id] = {
+            'path': str(repo_path),
+            'url': repo_url,
+            'info': repo_info
+        }
+        
+        # Get list of files
+        files = []
+        for ext in repo_analyzer.SUPPORTED_EXTENSIONS:
+            for file_path in repo_path.rglob(f"*{ext}"):
+                rel_path = str(file_path.relative_to(repo_path))
+                files.append({
+                    'path': rel_path,
+                    'name': file_path.name,
+                    'language': repo_analyzer.SUPPORTED_EXTENSIONS[ext],
+                    'size': file_path.stat().st_size
+                })
+        
+        return jsonify({
+            'success': True,
+            'session_id': session_id,
+            'repo_info': repo_info,
+            'files': files,
+            'total_files': len(files)
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/repo-files/<session_id>', methods=['GET'])
+def get_repo_files(session_id):
+    """Get list of files in a cloned repository"""
+    try:
+        if session_id not in repo_paths:
+            return jsonify({'error': 'Session not found. Please clone the repository first.'}), 404
+        
+        repo_data = repo_paths[session_id]
+        repo_path = Path(repo_data['path'])
+        
+        files = []
+        for ext in repo_analyzer.SUPPORTED_EXTENSIONS:
+            for file_path in repo_path.rglob(f"*{ext}"):
+                rel_path = str(file_path.relative_to(repo_path))
+                files.append({
+                    'path': rel_path,
+                    'name': file_path.name,
+                    'language': repo_analyzer.SUPPORTED_EXTENSIONS[ext],
+                    'size': file_path.stat().st_size
+                })
+        
+        return jsonify({
+            'success': True,
+            'files': files,
+            'total_files': len(files)
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/file-content', methods=['POST'])
+def get_file_content():
+    """Get content of a specific file from cloned repository"""
+    try:
+        data = request.get_json()
+        session_id = data.get('session_id')
+        file_path = data.get('file_path')
+        
+        if not session_id or not file_path:
+            return jsonify({'error': 'Session ID and file path required'}), 400
+        
+        if session_id not in repo_paths:
+            return jsonify({'error': 'Session not found'}), 404
+        
+        repo_path = Path(repo_paths[session_id]['path'])
+        full_path = repo_path / file_path
+        
+        if not full_path.exists():
+            return jsonify({'error': 'File not found'}), 404
+        
+        # Read file content
+        with open(full_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Detect language
+        ext = Path(file_path).suffix.lower()
+        language = repo_analyzer.SUPPORTED_EXTENSIONS.get(ext, 'unknown')
+        
+        return jsonify({
+            'success': True,
+            'content': content,
+            'language': language,
+            'file_path': file_path
+        })
+        
+    except UnicodeDecodeError:
+        return jsonify({'error': 'Cannot read binary file'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/analyze-file-content', methods=['POST'])
+def analyze_file_content():
+    """Analyze content of a specific file"""
+    try:
+        data = request.get_json()
+        code = data.get('code', '')
+        language = data.get('language', 'auto')
+        
+        if not code:
+            return jsonify({'error': 'No code provided'}), 400
+        
+        # Detect language if auto
+        if language == 'auto':
+            language = detect_language(code)
+        
+        # Get analyzer
+        analyzer = analyzers.get(language, analyzers['generic'])
+        
+        # Analyze
+        result = analyzer.analyze(code)
+        
+        return jsonify({
+            'success': True,
+            'language': language,
+            'errors': result['errors'],
+            'warnings': result['warnings'],
+            'summary': result['summary']
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/save-feedback', methods=['POST'])
+def save_feedback():
+    """Save professor feedback for an assignment"""
+    try:
+        data = request.get_json()
+        
+        assignment_id = data.get('assignment_id')
+        feedback = data.get('feedback')
+        file_path = data.get('file_path')
+        errors = data.get('errors', [])
+        warnings = data.get('warnings', [])
+        
+        if not assignment_id:
+            return jsonify({'error': 'Assignment ID required'}), 400
+        
+        # Store feedback
+        if assignment_id not in assignment_feedback:
+            assignment_feedback[assignment_id] = {}
+        
+        assignment_feedback[assignment_id][file_path] = {
+            'feedback': feedback,
+            'errors': errors,
+            'warnings': warnings,
+            'timestamp': datetime.now().isoformat()
+        }
+        
+        # Check if all files have feedback
+        session_id = data.get('session_id')
+        if session_id and session_id in repo_paths:
+            repo_path = Path(repo_paths[session_id]['path'])
+            total_files = len(list(repo_path.rglob('*.*')))
+            checked_files = len(assignment_feedback[assignment_id])
+            
+            return jsonify({
+                'success': True,
+                'message': 'Feedback saved',
+                'progress': f'{checked_files}/{total_files} files checked',
+                'all_checked': checked_files >= total_files
+            })
+        
+        return jsonify({
+            'success': True,
+            'message': 'Feedback saved'
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/get-feedback/<assignment_id>', methods=['GET'])
+def get_feedback(assignment_id):
+    """Get feedback for an assignment"""
+    try:
+        feedback = assignment_feedback.get(assignment_id, {})
+        return jsonify({
+            'success': True,
+            'feedback': feedback
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/cleanup-repo/<session_id>', methods=['POST'])
+def cleanup_repo(session_id):
+    """Clean up a cloned repository"""
+    try:
+        if session_id in repo_paths:
+            repo_path = Path(repo_paths[session_id]['path'])
+            if repo_path.exists():
+                import shutil
+                shutil.rmtree(repo_path)
+            del repo_paths[session_id]
+        
+        return jsonify({
+            'success': True,
+            'message': 'Repository cleaned up'
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Add Path import
+from pathlib import Path
 
 if __name__ == '__main__':
     print("\n" + "="*60)

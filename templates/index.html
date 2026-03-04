@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Code Syntax Analyzer - Dark Theme</title>
+    <title>CodeTracker — Syntax Analyzer</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
       * {
         margin: 0;
@@ -11,620 +15,1927 @@
         box-sizing: border-box;
       }
 
+      :root {
+        --bg-dark: #0d1117;
+        --bg-card: #161b22;
+        --bg-input: #0d1117;
+        --border: #30363d;
+        --text-primary: #c9d1d9;
+        --text-secondary: #8b949e;
+        --accent-blue: #58a6ff;
+        --accent-green: #3fb950;
+        --accent-red: #f85149;
+        --accent-yellow: #d29922;
+        --accent-purple: #bc8cff;
+      }
+
       body {
         font-family:
           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
           sans-serif;
-        background: #0d1117;
+        background: var(--bg-dark);
+        color: var(--text-primary);
         min-height: 100vh;
-        padding: 20px;
       }
 
-      .container {
-        max-width: 1400px;
-        margin: 0 auto;
-        background: #161b22;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        overflow: hidden;
-        border: 1px solid #30363d;
+      /* Header */
+      .site-header {
+        background: var(--bg-card);
+        border-bottom: 1px solid var(--border);
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
-      .header {
-        background: #0d1117;
-        color: #c9d1d9;
-        padding: 30px;
-        text-align: center;
-        border-bottom: 1px solid #30363d;
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
       }
 
-      .header h1 {
-        font-size: 2.5em;
-        margin-bottom: 10px;
-        background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+      .brand-logo {
+        width: 64px;
+        height: 64px;
       }
 
-      .header p {
-        opacity: 0.9;
-        color: #8b949e;
+      .brand-text h1 {
+        font-size: 1.5rem;
+        color: var(--text-primary);
       }
 
-      .main-content {
-        padding: 30px;
+      .brand-text .subtitle {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
       }
 
-      .input-section {
-        margin-bottom: 30px;
-      }
-
-      .language-selector {
-        margin-bottom: 20px;
+      .header-right {
         display: flex;
         align-items: center;
         gap: 20px;
-        flex-wrap: wrap;
       }
 
-      .language-selector label {
-        font-weight: 600;
-        color: #c9d1d9;
-      }
-
-      .language-selector select {
-        padding: 10px 20px;
-        border: 1px solid #30363d;
-        border-radius: 6px;
-        font-size: 16px;
-        background: #0d1117;
-        color: #c9d1d9;
-        cursor: pointer;
-        transition: border-color 0.3s;
-      }
-
-      .language-selector select:hover {
-        border-color: #58a6ff;
-      }
-
-      .language-selector select:focus {
-        outline: none;
-        border-color: #58a6ff;
-      }
-
-      /* Code editor with line numbers */
-      .code-editor-container {
-        display: flex;
-        background: #0d1117;
-        border: 1px solid #30363d;
-        border-radius: 6px;
-        overflow: hidden;
-        font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
-        font-size: 14px;
-        line-height: 1.6;
-        min-height: 400px;
-      }
-
-      .line-numbers {
-        padding: 20px 10px;
-        background: #0a0c10;
-        color: #6e7681;
+      .user-info {
         text-align: right;
-        border-right: 1px solid #30363d;
-        user-select: none;
-        min-width: 50px;
-        font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
-        font-size: 14px;
-        line-height: 1.6;
-        white-space: pre;
       }
 
-      .code-input {
-        flex: 1;
-        padding: 20px;
-        background: #0d1117;
-        color: #c9d1d9;
-        border: none;
-        font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
-        font-size: 14px;
-        line-height: 1.6;
-        resize: vertical;
-        min-height: 400px;
-        outline: none;
+      .user-name {
+        font-weight: 600;
       }
 
-      .code-input:focus {
-        background: #0a0c10;
+      .user-role {
+        font-size: 0.8rem;
+        color: var(--accent-blue);
       }
 
-      .button-group {
+      .user-avatar {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-blue),
+          var(--accent-purple)
+        );
+        border-radius: 50%;
         display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.2rem;
+      }
+
+      /* Main Content */
+      .main-content {
+        padding: 30px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      /* Student Profile */
+      .student-profile {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .profile-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .avatar-large {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-blue),
+          var(--accent-purple)
+        );
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 700;
+      }
+
+      .person h2 {
+        margin-bottom: 5px;
+      }
+
+      .person .email {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+      }
+
+      .badges {
+        display: flex;
+        gap: 10px;
+      }
+
+      .badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .badge.green {
+        background: rgba(63, 185, 80, 0.15);
+        color: var(--accent-green);
+      }
+
+      .badge.blue {
+        background: rgba(88, 166, 255, 0.15);
+        color: var(--accent-blue);
+      }
+
+      .profile-stats {
+        display: flex;
+        gap: 20px;
+      }
+
+      .stat-card {
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 15px 25px;
+        display: flex;
+        align-items: center;
         gap: 15px;
-        margin-top: 20px;
-        flex-wrap: wrap;
+      }
+
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(88, 166, 255, 0.15);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent-blue);
+        font-size: 1.2rem;
+      }
+
+      .stat-title {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      /* Tabs */
+      .dashboard-tabs {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin-bottom: 30px;
+        overflow: hidden;
+      }
+
+      .tab-nav {
+        display: flex;
+        background: var(--bg-input);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .tab {
+        padding: 15px 25px;
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+        border-bottom: 2px solid transparent;
+      }
+
+      .tab:hover {
+        color: var(--text-primary);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .tab.active {
+        color: var(--accent-blue);
+        border-bottom-color: var(--accent-blue);
+      }
+
+      /* Content Sections */
+      .content {
+        display: none;
+      }
+
+      .content.active {
+        display: block;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      .section-header h3 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* Overview Grid */
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+      }
+
+      .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 25px;
+      }
+
+      .performance-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+
+      .perf-card {
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .perf-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+      }
+
+      .perf-icon.success {
+        background: rgba(63, 185, 80, 0.15);
+        color: var(--accent-green);
+      }
+
+      .perf-icon.warning {
+        background: rgba(210, 153, 34, 0.15);
+        color: var(--accent-yellow);
+      }
+
+      .perf-icon.muted {
+        background: rgba(139, 148, 158, 0.15);
+        color: var(--text-secondary);
+      }
+
+      .perf-icon.primary {
+        background: rgba(88, 166, 255, 0.15);
+        color: var(--accent-blue);
+      }
+
+      .perf-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .perf-value.big {
+        font-size: 2rem;
+      }
+
+      .perf-label {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      /* Branches Section */
+      .branches-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .branch-item {
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 15px;
+      }
+
+      .branch-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .branch-name {
+        font-weight: 600;
+        color: var(--accent-green);
+      }
+
+      .commit-hash {
+        font-family: monospace;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      .commit-message {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      /* Assignments */
+      .assignments-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .assignment-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 25px;
+        transition: all 0.3s;
+      }
+
+      .assignment-card:hover {
+        border-color: var(--accent-blue);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .assignment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .assignment-header h4 {
+        font-size: 1.2rem;
+      }
+
+      .status-badge {
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .status-badge.pending {
+        background: rgba(210, 153, 34, 0.15);
+        color: var(--accent-yellow);
+      }
+
+      .status-badge.submitted {
+        background: rgba(63, 185, 80, 0.15);
+        color: var(--accent-green);
+      }
+
+      .status-badge.checked {
+        background: rgba(88, 166, 255, 0.15);
+        color: var(--accent-blue);
+      }
+
+      .assignment-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .detail-item {
+        font-size: 0.9rem;
+      }
+
+      .detail-item strong {
+        color: var(--text-secondary);
+        display: block;
+        margin-bottom: 3px;
+      }
+
+      .repo-link {
+        color: var(--accent-blue);
+        text-decoration: none;
+      }
+
+      .repo-link:hover {
+        text-decoration: underline;
+      }
+
+      .assignment-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
       }
 
       .btn {
-        padding: 12px 30px;
+        padding: 10px 20px;
         border: none;
-        border-radius: 6px;
-        font-size: 16px;
+        border-radius: 8px;
+        font-size: 0.9rem;
         font-weight: 600;
         cursor: pointer;
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s;
-      }
-
-      .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
       }
 
       .btn-primary {
-        background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
+        background: var(--accent-blue);
         color: white;
       }
 
       .btn-primary:hover {
-        background: linear-gradient(135deg, #2ea043 0%, #3fb950 100%);
+        background: #4090e0;
       }
 
       .btn-secondary {
-        background: #21262d;
-        color: #c9d1d9;
-        border: 1px solid #30363d;
+        background: var(--bg-input);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
       }
 
       .btn-secondary:hover {
-        background: #30363d;
+        background: var(--border);
       }
 
-      .file-input {
-        display: none;
+      .btn-success {
+        background: var(--accent-green);
+        color: white;
       }
 
-      .file-label {
-        padding: 12px 30px;
-        background: #21262d;
-        color: #c9d1d9;
-        border: 1px solid #30363d;
+      .btn-success:hover {
+        background: #36a346;
+      }
+
+      /* Assignment Feedback Display */
+      .assignment-feedback {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border);
+      }
+
+      .feedback-summary {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+      }
+
+      .feedback-stat {
+        padding: 8px 15px;
         border-radius: 6px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s;
-        display: inline-block;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
 
-      .file-label:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        background: #30363d;
+      .feedback-stat.errors {
+        background: rgba(248, 81, 73, 0.15);
+        color: var(--accent-red);
       }
 
-      .results-section {
-        margin-top: 30px;
-        border-top: 1px solid #30363d;
-        padding-top: 30px;
+      .feedback-stat.warnings {
+        background: rgba(210, 153, 34, 0.15);
+        color: var(--accent-yellow);
       }
 
-      .results-header {
+      .feedback-stat.status {
+        background: rgba(63, 185, 80, 0.15);
+        color: var(--accent-green);
+      }
+
+      .feedback-text {
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+      }
+
+      .feedback-text h5 {
+        color: var(--accent-blue);
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+      }
+
+      .feedback-text p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+
+      /* Modal / Syntax Analyzer Popup */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        overflow: auto;
+      }
+
+      .modal-overlay.active {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 30px;
+      }
+
+      .syntax-modal {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        width: 100%;
+        max-width: 1400px;
+        max-height: 90vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .modal-header {
+        background: var(--bg-input);
+        border-bottom: 1px solid var(--border);
+        padding: 20px 25px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
       }
 
-      .results-header h2 {
-        color: #c9d1d9;
-      }
-
-      .summary {
+      .modal-header h3 {
         display: flex;
-        gap: 20px;
+        align-items: center;
+        gap: 10px;
       }
 
-      .summary-item {
-        padding: 10px 20px;
+      .modal-close {
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 5px;
+      }
+
+      .modal-close:hover {
+        color: var(--text-primary);
+      }
+
+      .modal-body {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      /* File List Sidebar */
+      .file-sidebar {
+        width: 280px;
+        background: var(--bg-input);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .file-sidebar-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .file-sidebar-header h4 {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+      }
+
+      .file-search {
+        width: 100%;
+        padding: 8px 12px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
         border-radius: 6px;
-        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 0.85rem;
       }
 
-      .summary-item.errors {
-        background: rgba(248, 81, 73, 0.1);
-        color: #f85149;
-        border: 1px solid #f85149;
+      .file-search:focus {
+        outline: none;
+        border-color: var(--accent-blue);
       }
 
-      .summary-item.warnings {
-        background: rgba(242, 211, 91, 0.1);
-        color: #f2d35b;
-        border: 1px solid #f2d35b;
+      .file-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
       }
 
-      .summary-item:last-child {
-        background: rgba(88, 166, 255, 0.1);
-        color: #58a6ff;
-        border: 1px solid #58a6ff;
+      .file-item {
+        padding: 10px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 5px;
+        transition: background 0.2s;
+      }
+
+      .file-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .file-item.active {
+        background: rgba(88, 166, 255, 0.15);
+        color: var(--accent-blue);
+      }
+
+      .file-item.has-errors {
+        border-left: 3px solid var(--accent-red);
+      }
+
+      .file-item.has-warnings {
+        border-left: 3px solid var(--accent-yellow);
+      }
+
+      .file-item.checked {
+        border-left: 3px solid var(--accent-green);
+      }
+
+      .file-icon {
+        font-size: 1rem;
+        width: 20px;
+        text-align: center;
+      }
+
+      .file-name {
+        flex: 1;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .file-status-icon {
+        font-size: 0.8rem;
+      }
+
+      /* Code Editor Area */
+      .code-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .code-toolbar {
+        background: var(--bg-input);
+        border-bottom: 1px solid var(--border);
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .current-file {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.9rem;
+      }
+
+      .language-badge {
+        padding: 3px 10px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        background: rgba(188, 140, 255, 0.15);
+        color: var(--accent-purple);
+      }
+
+      .code-viewer {
+        flex: 1;
+        display: flex;
+        overflow: auto;
+        background: #1e1e1e;
+      }
+
+      .line-numbers {
+        padding: 15px 10px;
+        background: #1e1e1e;
+        color: #6e7681;
+        text-align: right;
+        font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        user-select: none;
+        min-width: 50px;
+        border-right: 1px solid #2d2d2d;
+      }
+
+      .code-content {
+        flex: 1;
+        padding: 15px;
+        font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #d4d4d4;
+        white-space: pre;
+        overflow-x: auto;
+      }
+
+      .code-line {
+        display: block;
+      }
+
+      .code-line.error-line {
+        background: rgba(248, 81, 73, 0.2);
+        border-left: 3px solid var(--accent-red);
+        margin-left: -3px;
+        padding-left: 10px;
+      }
+
+      .code-line.warning-line {
+        background: rgba(210, 153, 34, 0.2);
+        border-left: 3px solid var(--accent-yellow);
+        margin-left: -3px;
+        padding-left: 10px;
+      }
+
+      /* Error Panel */
+      .error-panel {
+        width: 350px;
+        background: var(--bg-input);
+        border-left: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .error-panel-header {
+        padding: 15px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .error-panel-header h4 {
+        font-size: 0.9rem;
+      }
+
+      .error-summary {
+        display: flex;
+        gap: 10px;
+      }
+
+      .error-count,
+      .warning-count {
+        padding: 3px 10px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+      }
+
+      .error-count {
+        background: rgba(248, 81, 73, 0.15);
+        color: var(--accent-red);
+      }
+
+      .warning-count {
+        background: rgba(210, 153, 34, 0.15);
+        color: var(--accent-yellow);
       }
 
       .error-list {
-        list-style: none;
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
       }
 
       .error-item {
-        background: #0d1117;
-        border-left: 4px solid;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent-red);
+        border-radius: 6px;
+        padding: 12px;
         margin-bottom: 10px;
-        padding: 15px;
-        border-radius: 0 6px 6px 0;
-        border: 1px solid #30363d;
-        border-left-width: 4px;
-      }
-
-      .error-item.error {
-        border-left-color: #f85149;
       }
 
       .error-item.warning {
-        border-left-color: #f2d35b;
+        border-left-color: var(--accent-yellow);
       }
 
-      .error-item.info {
-        border-left-color: #58a6ff;
-        background: #0a0c10;
-      }
-
-      .error-item.success {
-        border-left-color: #3fb950;
-      }
-
-      .error-line {
-        font-weight: 600;
-        color: #c9d1d9;
+      .error-line-num {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
         margin-bottom: 5px;
       }
 
       .error-message {
-        color: #8b949e;
+        font-size: 0.85rem;
+        line-height: 1.5;
       }
 
-      .loading {
-        display: none;
+      .no-errors {
         text-align: center;
         padding: 30px;
+        color: var(--accent-green);
       }
 
-      .loading.active {
-        display: block;
+      .no-errors i {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      /* Feedback Section */
+      .feedback-section {
+        border-top: 1px solid var(--border);
+        padding: 20px;
+        background: var(--bg-input);
+      }
+
+      .feedback-section h4 {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .feedback-textarea {
+        width: 100%;
+        min-height: 100px;
+        padding: 15px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-size: 0.9rem;
+        resize: vertical;
+        margin-bottom: 15px;
+      }
+
+      .feedback-textarea:focus {
+        outline: none;
+        border-color: var(--accent-blue);
+      }
+
+      .feedback-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      /* Loading State */
+      .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(13, 17, 23, 0.9);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+      }
+
+      .loading-overlay.hidden {
+        display: none;
       }
 
       .spinner {
-        border: 4px solid #30363d;
-        border-top: 4px solid #58a6ff;
-        border-radius: 50%;
         width: 50px;
         height: 50px;
+        border: 4px solid var(--border);
+        border-top-color: var(--accent-blue);
+        border-radius: 50%;
         animation: spin 1s linear infinite;
-        margin: 0 auto 20px;
       }
 
       @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
+        to {
           transform: rotate(360deg);
         }
       }
 
-      .filename {
-        background: #21262d;
-        color: #c9d1d9;
-        padding: 5px 10px;
-        border-radius: 6px;
-        display: inline-block;
-        margin-left: 10px;
-        font-size: 14px;
-        border: 1px solid #30363d;
+      .loading-text {
+        margin-top: 15px;
+        color: var(--text-secondary);
       }
 
-      details {
-        background: #0d1117;
-        border: 1px solid #30363d;
-        border-radius: 6px;
-        padding: 10px;
+      /* Code Quality Tab */
+      .quality-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
       }
 
-      summary {
-        color: #58a6ff;
-        cursor: pointer;
+      .quality-metric {
+        margin-bottom: 20px;
       }
 
-      pre {
-        color: #8b949e;
-        background: #0a0c10;
-        padding: 10px;
+      .metric-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .metric-value {
+        font-weight: 600;
+      }
+
+      /* Analytics */
+      .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 20px;
+      }
+
+      .comparison-metrics {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .metric {
+        margin-bottom: 15px;
+      }
+
+      .metric-label {
+        margin-bottom: 10px;
+        color: var(--text-secondary);
+      }
+
+      .progress-comparison {
+        display: flex;
+        flex-direction: column;
+            gap: 5px;
+      }
+
+      .progress-comparison .progress {
+        height: 8px;
+        background: var(--border);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .progress-comparison .progress-bar {
+        height: 100%;
+        background: var(--accent-blue);
         border-radius: 4px;
       }
 
-      @media (max-width: 768px) {
-        .header h1 {
-          font-size: 2em;
-        }
+      .progress-comparison .progress.average .progress-bar {
+        background: var(--text-secondary);
+      }
 
-        .button-group {
+      .metric-details {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        margin-top: 5px;
+      }
+
+      .student-score {
+        color: var(--accent-blue);
+        font-weight: 600;
+      }
+
+      .average-score {
+        color: var(--text-secondary);
+      }
+
+      /* Responsive */
+      @media (max-width: 1200px) {
+        .modal-body {
           flex-direction: column;
         }
 
-        .btn,
-        .file-label {
+        .file-sidebar {
           width: 100%;
-          text-align: center;
+          max-height: 200px;
         }
 
-        .code-editor-container {
+        .error-panel {
+          width: 100%;
+          max-height: 250px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .student-profile {
           flex-direction: column;
+          gap: 20px;
         }
 
-        .line-numbers {
-          border-right: none;
-          border-bottom: 1px solid #30363d;
-          text-align: left;
-          padding: 10px 20px;
+        .profile-stats {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .tab-nav {
+          overflow-x: auto;
+        }
+
+        .assignment-actions {
+          flex-direction: column;
         }
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="header">
-        <h1>Code Syntax Analyzer</h1>
-        <p>Paste your code below to check for syntax errors and warnings</p>
+    <!-- Header -->
+    <header class="site-header">
+      <div class="header-left">
+        <img
+          src="../classroom/git.png"
+          alt="CodeTracker Logo"
+          class="brand-logo"
+        />
+        <div class="brand-text">
+          <h1>CodeTracker</h1>
+          <div class="subtitle">GitHub Project Tracking System</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="user-info">
+          <div class="user-name">Israel Cabasug</div>
+          <div class="user-role">Instructor</div>
+        </div>
+        <div class="user-avatar">IC</div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Student Profile -->
+      <div class="student-profile">
+        <div class="profile-left">
+          <div class="avatar-large">DF</div>
+          <div class="person">
+            <h2>Dexter Facelo</h2>
+            <div class="email">dexter.facelo@student.edu</div>
+            <div class="badges">
+              <span class="badge green">
+                <i class="fas fa-chart-line"></i>
+                <span>64% Engagement</span>
+              </span>
+              <span class="badge blue">
+                <i class="fas fa-star"></i>
+                <span>75% Avg Score</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div>
+              <div class="stat-title">Completion Rate</div>
+              <div class="stat-value">0%</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-code-commit"></i>
+            </div>
+            <div>
+              <div class="stat-title">Total Commits</div>
+              <div class="stat-value">12</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-project-diagram"></i>
+            </div>
+            <div>
+              <div class="stat-title">Active Projects</div>
+              <div class="stat-value">1</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="main-content">
-        <div class="input-section">
-          <div class="language-selector">
-            <label for="language">Language:</label>
-            <select id="language">
-              <option value="auto">Auto-detect</option>
-              <option value="python">Python</option>
-              <option value="java">Java</option>
-              <option value="cpp">C++</option>
-              <option value="javascript">JavaScript</option>
-              <option value="html">HTML</option>
-            </select>
+      <!-- Dashboard Tabs -->
+      <div class="dashboard-tabs">
+        <nav class="tab-nav">
+          <button class="tab active" data-tab="overview">
+            <i class="fas fa-chart-pie"></i>
+            <span>Overview</span>
+          </button>
+          <button class="tab" data-tab="assignments">
+            <i class="fas fa-tasks"></i>
+            <span>Assignments</span>
+          </button>
+          <button class="tab" data-tab="analytics">
+            <i class="fas fa-chart-bar"></i>
+            <span>Analytics</span>
+          </button>
+          <button class="tab" data-tab="quality">
+            <i class="fas fa-code"></i>
+            <span>Code Quality</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Overview Tab -->
+      <section id="overview" class="content active">
+        <div class="section-header">
+          <h3><i class="fas fa-eye"></i> Performance Overview</h3>
+        </div>
+        <div class="grid-container">
+          <div class="performance-cards">
+            <div class="perf-card">
+              <div class="perf-icon success">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div>
+                <div class="perf-label">Completed</div>
+                <div class="perf-value" id="completedVal">0/1</div>
+              </div>
+            </div>
+            <div class="perf-card">
+              <div class="perf-icon warning">
+                <i class="fas fa-sync-alt"></i>
+              </div>
+              <div>
+                <div class="perf-label">In Progress</div>
+                <div class="perf-value" id="inProgressVal">1</div>
+              </div>
+            </div>
+            <div class="perf-card">
+              <div class="perf-icon muted">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div>
+                <div class="perf-label">Not Started</div>
+                <div class="perf-value" id="notStartedVal">0</div>
+              </div>
+            </div>
+            <div class="perf-card highlight">
+              <div class="perf-icon primary">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div>
+                <div class="perf-label">Average Score</div>
+                <div class="perf-value big" id="avgScoreVal">75%</div>
+              </div>
+            </div>
           </div>
 
-          <div class="code-editor-container">
-            <div class="line-numbers" id="lineNumbers">1</div>
-            <textarea
-              id="codeInput"
-              class="code-input"
-              placeholder="Paste your code here..."
-              oninput="updateLineNumbers()"
-              onscroll="syncScroll()"
-            ></textarea>
-          </div>
-
-          <div class="button-group">
-            <button class="btn btn-primary" onclick="analyzeCode()">
-              Analyze Code
-            </button>
-            <button class="btn btn-secondary" onclick="clearCode()">
-              Clear
-            </button>
-            <label for="fileInput" class="file-label">Upload File</label>
-            <input
-              type="file"
-              id="fileInput"
-              class="file-input"
-              accept=".py,.java,.cpp,.js,.html,.txt"
-              onchange="handleFileUpload(this)"
-            />
+          <div class="branches-section card">
+            <div class="section-header">
+              <h3>
+                <i class="fas fa-code-branch"></i> Repository Branches & Commits
+              </h3>
+            </div>
+            <div class="branches-list" id="branchesList">
+              <div class="branch-item">
+                <div class="branch-header">
+                  <span class="branch-name">main</span>
+                  <span class="commit-hash">a1b2c3d</span>
+                </div>
+                <div class="commit-message">
+                  Initial commit - GitHub Integration System
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div class="loading" id="loading">
-          <div class="spinner"></div>
-          <p>Analyzing your code...</p>
+      <!-- Assignments Tab -->
+      <section id="assignments" class="content">
+        <div class="section-header">
+          <h3><i class="fas fa-tasks"></i> Assignments</h3>
         </div>
+        <div class="assignments-container" id="assignmentsContainer">
+          <!-- Assignment Card 1 -->
+          <div
+            class="assignment-card"
+            data-assignment-id="system1"
+            data-repo-url="https://github.com/example/student-repo"
+          >
+            <div class="assignment-header">
+              <h4>System 1 - GitHub Integration</h4>
+              <span class="status-badge pending" id="status-system1"
+                >Pending Review</span
+              >
+            </div>
+            <div class="assignment-details">
+              <div class="detail-item">
+                <strong>Due:</strong> March 10, 2026
+              </div>
+              <div class="detail-item"><strong>Difficulty:</strong> Medium</div>
+              <div class="detail-item">
+                <strong>Repository:</strong>
+                <a href="#" class="repo-link" target="_blank">View on GitHub</a>
+              </div>
+            </div>
+            <div class="assignment-actions">
+              <button
+                class="btn btn-primary open-analyzer"
+                data-assignment="system1"
+              >
+                <i class="fas fa-code"></i> Open Syntax Analyzer
+              <!-- Feedback will be shown here after checking -->
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <div class="results-section" id="results" style="display: none">
-          <div class="results-header">
-            <h2>Analysis Results</h2>
-            <div class="summary" id="summary"></div>
+      <!-- Analytics Tab -->
+      <section id="analytics" class="content">
+        <div class="section-header">
+          <h3><i class="fas fa-chart-bar"></i> Analytics</h3>
+        </div>
+        <div class="analytics-grid">
+          <div class="card">
+            <div class="card-header">
+              <h4><i class="fas fa-users"></i> Class Comparison</h4>
+            </div>
+            <div class="comparison-metrics">
+              <div class="metric">
+                <div class="metric-label">Completion Rate</div>
+                <div class="progress-comparison">
+                  <div class="progress student">
+                    <div class="progress-bar" style="width: 0%"></div>
+                  </div>
+                  <div class="progress average">
+                    <div class="progress-bar" style="width: 65%"></div>
+                  </div>
+                </div>
+                <div class="metric-details">
+                  <span class="student-score">0%</span>
+                  <span class="average-score">Avg: 65%</span>
+                </div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Average Score</div>
+                <div class="progress-comparison">
+                  <div class="progress student">
+                    <div class="progress-bar" style="width: 75%"></div>
+                  </div>
+                  <div class="progress average">
+                    <div class="progress-bar" style="width: 72%"></div>
+                  </div>
+                </div>
+                <div class="metric-details">
+                  <span class="student-score">75%</span>
+                  <span class="average-score">Avg: 72%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Code Quality Tab -->
+      <section id="quality" class="content">
+        <div class="section-header">
+          <h3><i class="fas fa-code"></i> Code Quality Metrics</h3>
+        </div>
+        <div class="quality-grid">
+          <div class="card">
+            <h4><i class="fas fa-sitemap"></i> Complexity Analysis</h4>
+            <div class="quality-metric">
+              <div class="metric-info">
+                <span>Cyclomatic Complexity</span>
+                <span class="metric-value">12.3</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 60%"></div>
+              </div>
+            </div>
+            <div class="quality-metric">
+              <div class="metric-info">
+                <span>Maintainability Index</span>
+                <span class="metric-value">78</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 78%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h4><i class="fas fa-clipboard-check"></i> Code Standards</h4>
+            <div class="standards-list">
+              <div class="standard-item">
+                <i class="fas fa-check-circle success"></i>
+                <span>Naming conventions</span>
+                <span class="standard-score">92%</span>
+              </div>
+              <div class="standard-item">
+                <i class="fas fa-check-circle success"></i>
+                <span>Code formatting</span>
+                <span class="standard-score">88%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Syntax Analyzer Modal -->
+    <div class="modal-overlay" id="syntaxModal">
+      <div class="syntax-modal">
+        <div class="modal-header">
+          <h3><i class="fas fa-code"></i> Syntax Analyzer</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- File List Sidebar -->
+          <div class="file-sidebar">
+            <div class="file-sidebar-header">
+              <h4><i class="fas fa-folder"></i> Repository Files</h4>
+              <input
+                type="text"
+                class="file-search"
+                placeholder="Search files..."
+                id="fileSearch"
+              />
+            </div>
+            <div class="file-list" id="fileList">
+              <!-- Files will be loaded here -->
+            </div>
           </div>
 
-          <div id="errorList"></div>
+          <!-- Code Area -->
+          <div class="code-area">
+            <div class="code-toolbar">
+              <div class="current-file">
+                <i class="fas fa-file-code"></i>
+                <span id="currentFileName">Select a file</span>
+                <span class="language-badge" id="languageBadge">-</span>
+              </div>
+              <button
+                class="btn btn-primary"
+                id="analyzeBtn"
+                onclick="analyzeCurrentFile()"
+              >
+                <i class="fas fa-search"></i> Analyze
+              </button>
+            </div>
+            <div class="code-viewer" id="codeViewer">
+              <div class="loading-overlay hidden" id="codeLoading">
+                <div class="spinner"></div>
+                <div class="loading-text">Loading file...</div>
+              </div>
+              <div class="line-numbers" id="lineNumbers"></div>
+              <div class="code-content" id="codeContent">
+                <div
+                  style="
+                    padding: 20px;
+                    text-align: center;
+                    color: var(--text-secondary);
+                  "
+                >
+                  <i class="fas fa-arrow-left"></i> Select a file from the
+                  sidebar to view its contents
+                </div>
+              </div>
+            </div>
+
+            <!-- Feedback Section -->
+            <div class="feedback-section">
+              <h4><i class="fas fa-comment-dots"></i> Professor Feedback</h4>
+              <textarea
+                class="feedback-textarea"
+                id="feedbackText"
+                placeholder="Enter your feedback about this code..."
+              ></textarea>
+              <div class="feedback-actions">
+                <button class="btn btn-secondary" onclick="previousFile()">
+                  <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <button class="btn btn-success" onclick="saveFeedbackAndDone()">
+                  <i class="fas fa-check"></i> Done Checking
+                </button>
+                <button class="btn btn-secondary" onclick="nextFile()">
+                  Next <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error Panel -->
+          <div class="error-panel">
+            <div class="error-panel-header">
+              <h4><i class="fas fa-exclamation-triangle"></i> Issues</h4>
+              <div class="error-summary">
+                <span class="error-count" id="errorCount">0</span>
+                <span class="warning-count" id="warningCount">0</span>
+              </div>
+            </div>
+            <div class="error-list" id="errorList">
+              <div
+                style="
+                  padding: 20px;
+                  text-align: center;
+                  color: var(--text-secondary);
+                "
+              >
+                Click "Analyze" to check for errors
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <script>
-      // Line numbers functionality
-      function updateLineNumbers() {
-        const textarea = document.getElementById("codeInput");
-        const lineNumbers = document.getElementById("lineNumbers");
-        const lines = textarea.value.split("\n").length;
-        let lineNumberHtml = "";
-        for (let i = 1; i <= lines; i++) {
-          lineNumberHtml += i + "\n";
-        }
-        lineNumbers.innerText = lineNumberHtml;
-      }
 
-      function syncScroll() {
-        const textarea = document.getElementById("codeInput");
-        const lineNumbers = document.getElementById("lineNumbers");
-        lineNumbers.scrollTop = textarea.scrollTop;
-      }
 
-      // Initialize line numbers on page load
-      document.addEventListener("DOMContentLoaded", function () {
-        updateLineNumbers();
+      // Global state
+      let currentAssignment = null;
+      let currentSessionId = null;
+      let fileList = [];
+      let currentFileIndex = 0;
+      let currentFileContent = "";
+      let currentErrors = [];
+      let currentWarnings = [];
+      let fileAnalysisStatus = {}; // Track which files have been analyzed
+
+      // Tab functionality
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const tabId = tab.dataset.tab;
+
+          // Update tab buttons
+          document
+            .querySelectorAll(".tab")
+            .forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+
+          // Update content sections
+          document
+            .querySelectorAll(".content")
+            .forEach((c) => c.classList.remove("active"));
+          document.getElementById(tabId).classList.add("active");
+        });
       });
 
-      async function analyzeCode() {
-        const code = document.getElementById("codeInput").value;
-        const language = document.getElementById("language").value;
+      // Open Syntax Analyzer Modal
+// Open Syntax Analyzer Modal
+document.querySelectorAll(".open-analyzer").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const assignmentId = btn.dataset.assignment;
+    currentAssignment = assignmentId;
 
-        if (!code.trim()) {
-          alert("Please enter some code to analyze.");
+    // Get repository URL from the assignment card
+    const assignmentCard = document.querySelector(
+      `[data-assignment-id="${assignmentId}"]`,
+    );
+    
+    // For testing, use null to trigger local sample repository
+    // In production, you would use the actual repo URL
+    const repoUrl = null; // This will use the local sample
+    
+    // Open modal
+    document.getElementById("syntaxModal").classList.add("active");
+
+    // Load files (will use local sample)
+    await loadRepository(repoUrl);
+  });
+});
+      // Close Modal
+      function closeModal() {
+        document.getElementById("syntaxModal").classList.remove("active");
+      }
+
+// API Base URL - Point to the Express server
+      const API_BASE_URL = "http://localhost:5500";
+
+      // Load Repository
+      // Replace all fetch calls with this pattern
+ // Replace your existing loadRepository function with this:
+async function loadRepository(repoUrl) {
+  const fileListEl = document.getElementById("fileList");
+  fileListEl.innerHTML =
+    '<div style="padding: 20px; text-align: center;"><div class="spinner" style="margin: 0 auto;"></div><div style="margin-top: 10px;">Loading files...</div></div>';
+
+  try {
+    console.log("Connecting to:", API_BASE_URL);
+    
+    const response = await fetch(`${API_BASE_URL}/clone-repo`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        url: repoUrl,
+        branch: "main",
+      }),
+    });
+
+    console.log("Response status:", response.status);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
+      throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+    }
+
+    const text = await response.text();
+    console.log("Response text:", text);
+    
+    if (!text) {
+      throw new Error("Empty response from server");
+    }
+
+    const data = JSON.parse(text);
+    console.log("Parsed data:", data);
+
+    if (data.success) {
+      currentSessionId = data.session_id;
+      fileList = data.files || [];
+      currentFileIndex = 0;
+      fileAnalysisStatus = {};
+
+      renderFileList();
+
+      if (fileList.length > 0) {
+        await loadFile(0);
+      }
+    } else {
+      fileListEl.innerHTML = `<div style="padding: 20px; color: var(--accent-red);">Error: ${data.error}</div>`;
+    }
+  } catch (error) {
+    console.error("Full error:", error);
+    fileListEl.innerHTML = `<div style="padding: 20px; color: var(--accent-red);">
+      <i class="fas fa-exclamation-triangle"></i> Error: ${error.message}<br>
+      <small>Make sure server is running at ${API_BASE_URL}</small>
+    </div>`;
+  }
+}
+      // Render File List
+      function renderFileList(filter = "") {
+        const fileListEl = document.getElementById("fileList");
+        const filteredFiles = filter
+          ? fileList.filter((f) =>
+              f.name.toLowerCase().includes(filter.toLowerCase()),
+            )
+          : fileList;
+
+        fileListEl.innerHTML = filteredFiles
+          .map((file, index) => {
+            const status = fileAnalysisStatus[file.path];
+            let statusClass = "";
+            let statusIcon = "";
+
+            if (status) {
+              if (status.errors > 0) {
+                statusClass = "has-errors";
+                statusIcon =
+                  '<i class="fas fa-times-circle file-status-icon" style="color: var(--accent-red);"></i>';
+              } else if (status.warnings > 0) {
+                statusClass = "has-warnings";
+                statusIcon =
+                  '<i class="fas fa-exclamation-circle file-status-icon" style="color: var(--accent-yellow);"></i>';
+              } else {
+                statusClass = "checked";
+                statusIcon =
+                  '<i class="fas fa-check-circle file-status-icon" style="color: var(--accent-green);"></i>';
+              }
+            }
+
+            return `
+                    <div class="file-item ${statusClass} ${index === currentFileIndex ? "active" : ""}" onclick="loadFile(${index})">
+                        <i class="fas fa-file-code file-icon"></i>
+                        <span class="file-name" title="${file.path}">${file.name}</span>
+                        ${statusIcon}
+                    </div>
+                `;
+          })
+          .join("");
+      }
+
+      // Search files
+      document.getElementById("fileSearch").addEventListener("input", (e) => {
+        renderFileList(e.target.value);
+      });
+
+      // Load File Content
+      async function loadFile(index) {
+        if (index < 0 || index >= fileList.length) return;
+
+        currentFileIndex = index;
+        const file = fileList[index];
+
+        // Update active state in file list
+        document.querySelectorAll(".file-item").forEach((el, i) => {
+          el.classList.toggle("active", i === index);
+        });
+
+        // Show loading
+        document.getElementById("codeLoading").classList.remove("hidden");
+        document.getElementById("codeContent").innerHTML = "";
+        document.getElementById("lineNumbers").innerHTML = "";
+
+        // Update toolbar
+        document.getElementById("currentFileName").textContent = file.name;
+        document.getElementById("languageBadge").textContent = file.language;
+
+try {
+          const response = await fetch(`${API_BASE_URL}/file-content`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              session_id: currentSessionId,
+              file_path: file.path,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            currentFileContent = data.content;
+            displayCode(data.content, file.language);
+          } else {
+            document.getElementById("codeContent").innerHTML =
+              `<div style="padding: 20px; color: var(--accent-red);">Error: ${data.error}</div>`;
+          }
+        } catch (error) {
+          document.getElementById("codeContent").innerHTML =
+            `<div style="padding: 20px; color: var(--accent-red);">Error: ${error.message}</div>`;
+        } finally {
+          document.getElementById("codeLoading").classList.add("hidden");
+        }
+      }
+
+      // Display Code with Line Numbers
+      function displayCode(code, language) {
+        const lines = code.split("\n");
+        const lineNumbersEl = document.getElementById("lineNumbers");
+        const codeContentEl = document.getElementById("codeContent");
+
+        let lineNumbersHtml = "";
+        let codeHtml = "";
+
+        lines.forEach((line, i) => {
+          lineNumbersHtml += `<div>${i + 1}</div>`;
+
+          // Check if this line has an error or warning
+          const hasError = currentErrors.some((e) => e.line === i + 1);
+          const hasWarning = currentWarnings.some((w) => w.line === i + 1);
+
+          let lineClass = "code-line";
+          if (hasError) lineClass += " error-line";
+          else if (hasWarning) lineClass += " warning-line";
+
+          codeHtml += `<div class="${lineClass}">${escapeHtml(line)}</div>`;
+        });
+
+        lineNumbersEl.innerHTML = lineNumbersHtml;
+        codeContentEl.innerHTML = codeHtml;
+      }
+
+      // Escape HTML
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // Analyze Current File
+      async function analyzeCurrentFile() {
+        if (!currentFileContent) return;
+
+        const file = fileList[currentFileIndex];
+        if (!file) {
+          alert("No file selected!");
+          return;
+        }
+        console.log(file.path); // should print the file path
+
+try {
+          const response = await fetch(`${API_BASE_URL}/analyze-file-content`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              session_id: currentSessionId,
+              file_path: file.path,
+              content: currentFileContent,
+              language: file.language,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            currentErrors = data.errors || [];
+            currentWarnings = data.warnings || [];
+
+            // Save analysis result for sidebar indicator
+            fileAnalysisStatus[file.path] = {
+              errors: currentErrors.length,
+              warnings: currentWarnings.length,
+            };
+
+            updateErrorPanel();
+            displayCode(currentFileContent, file.language);
+            renderFileList();
+          } else {
+            alert("Analysis failed: " + data.error);
+          }
+        } catch (error) {
+          alert("Error analyzing file: " + error.message);
+        }
+      }
+      function updateErrorPanel() {
+        const errorListEl = document.getElementById("errorList");
+        const errorCountEl = document.getElementById("errorCount");
+        const warningCountEl = document.getElementById("warningCount");
+
+        errorCountEl.textContent = currentErrors.length;
+        warningCountEl.textContent = currentWarnings.length;
+
+        if (currentErrors.length === 0 && currentWarnings.length === 0) {
+          errorListEl.innerHTML = `
+      <div class="no-errors">
+        <i class="fas fa-check-circle"></i>
+        <div>No issues found!</div>
+      </div>
+    `;
           return;
         }
 
-        showLoading();
+        errorListEl.innerHTML = "";
 
-        try {
-          const response = await fetch("http://127.0.0.1:5000/analyze", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ code, language }),
-          });
-
-          const data = await response.json();
-
-          if (data.success) {
-            displayResults(data);
-          } else {
-            alert("Error: " + data.error);
-          }
-        } catch (error) {
-          alert("Error connecting to server: " + error.message);
-        } finally {
-          hideLoading();
-        }
-      }
-
-      async function handleFileUpload(input) {
-        const file = input.files[0];
-        if (!file) return;
-
-        const formData = new FormData();
-        formData.append("file", file);
-
-        showLoading();
-
-        try {
-          const response = await fetch("http://127.0.0.1:5000/analyze-file", {
-            method: "POST",
-            body: formData,
-          });
-
-          const data = await response.json();
-
-          if (data.success) {
-            document.getElementById("codeInput").value = data.code || "";
-            updateLineNumbers(); // Update line numbers after setting code
-            displayResults(data);
-          } else {
-            alert("Error: " + data.error);
-          }
-        } catch (error) {
-          alert("Error uploading file: " + error.message);
-        } finally {
-          hideLoading();
-          input.value = ""; // Reset file input
-        }
-      }
-
-      function displayResults(data) {
-        const results = document.getElementById("results");
-        const summary = document.getElementById("summary");
-        const errorList = document.getElementById("errorList");
-
-        // Update summary
-        summary.innerHTML = `
-        <div class="summary-item errors">Errors: ${data.summary.error_count}</div>
-        <div class="summary-item warnings">Warnings: ${data.summary.warning_count}</div>
-        <div class="summary-item">Language: ${data.language}</div>
+        currentErrors.forEach((err) => {
+          errorListEl.innerHTML += `
+      <div class="error-item">
+        <div class="error-line-num">Line ${err.line}</div>
+        <div class="error-message">${err.message}</div>
+      </div>
     `;
+        });
 
-        // Display errors and warnings
-        let html = '<ul class="error-list">';
+        currentWarnings.forEach((warn) => {
+          errorListEl.innerHTML += `
+      <div class="error-item warning">
+        <div class="error-line-num">Line ${warn.line}</div>
+        <div class="error-message">${warn.message}</div>
+      </div>
+    `;
+        });
+      }
 
-        // Show detected language info
-        html += `<li class="error-item info">
-        <div class="error-line">📊 Analysis Summary</div>
-        <div class="error-message">Language: ${data.language}</div>
-        <div class="error-message">Total Errors: ${data.summary.error_count}</div>
-        <div class="error-message">Total Warnings: ${data.summary.warning_count}</div>
-    </li>`;
+      // Navigation
+      function previousFile() {
+        if (currentFileIndex > 0) {
+          loadFile(currentFileIndex - 1);
+        }
+      }
 
-        // Show errors
-        if (data.errors.length > 0) {
-          html += `<li class="error-item error">
-            <div class="error-line">❌ ERRORS (${data.errors.length})</div>
-        </li>`;
+      function nextFile() {
+        if (currentFileIndex < fileList.length - 1) {
+          loadFile(currentFileIndex + 1);
+        }
+      }
 
-          data.errors.forEach((error, index) => {
-            html += `
-                <li class="error-item error" style="margin-left: 20px;">
-                    <div class="error-line">Error #${index + 1} - Line ${error.line || "?"}, Column ${error.column || "?"}</div>
-                    <div class="error-message">${error.message}</div>
-                    <div style="font-size: 0.8em; color: #6e7681; margin-top: 5px;">Type: ${error.type || "syntax_error"}</div>
-                </li>
-            `;
+      // Save Feedback and Done
+      async function saveFeedbackAndDone() {
+        const feedback = document.getElementById("feedbackText").value;
+        const file = fileList[currentFileIndex];
+
+try {
+          const response = await fetch(`${API_BASE_URL}/save-feedback`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              assignment_id: currentAssignment,
+              session_id: currentSessionId,
+              file_path: file.path,
+              feedback: feedback,
+              errors: currentErrors,
+              warnings: currentWarnings,
+            }),
           });
+
+          const data = await response.json();
+
+          if (data.success) {
+            // Update assignment card with feedback
+            updateAssignmentCard(currentAssignment);
+
+            // Show success message
+            alert("Feedback saved! Assignment marked as checked.");
+
+            // Close modal
+            closeModal();
+          }
+        } catch (error) {
+          console.error("Error saving feedback:", error);
+          alert("Error saving feedback");
         }
+      }
 
-        // Show warnings
-        if (data.warnings.length > 0) {
-          html += `<li class="error-item warning" style="margin-top: 15px;">
-            <div class="error-line">⚠️ WARNINGS (${data.warnings.length})</div>
-        </li>`;
+      // Update Assignment Card
+      function updateAssignmentCard(assignmentId) {
+        const feedbackEl = document.getElementById(`feedback-${assignmentId}`);
+        const statusEl = document.getElementById(`status-${assignmentId}`);
 
-          data.warnings.forEach((warning, index) => {
-            html += `
-                <li class="error-item warning" style="margin-left: 20px;">
-                    <div class="error-line">Warning #${index + 1} - Line ${warning.line || "?"}, Column ${warning.column || "?"}</div>
-                    <div class="error-message">${warning.message}</div>
-                </li>
+        // Calculate total errors and warnings
+        let totalErrors = 0;
+        let totalWarnings = 0;
+
+        Object.values(fileAnalysisStatus).forEach((status) => {
+          totalErrors += status.errors || 0;
+          totalWarnings += status.warnings || 0;
+        });
+
+        // Update status
+        statusEl.textContent = "Checked";
+        statusEl.className = "status-badge checked";
+
+        // Show feedback summary
+        feedbackEl.style.display = "block";
+        feedbackEl.innerHTML = `
+                <div class="feedback-summary">
+                    <span class="feedback-stat errors">
+                        <i class="fas fa-times-circle"></i> ${totalErrors} Errors
+                    </span>
+                    <span class="feedback-stat warnings">
+                        <i class="fas fa-exclamation-triangle"></i> ${totalWarnings} Warnings
+                    </span>
+                    <span class="feedback-stat status">
+                        <i class="fas fa-check"Error: Failed to fetch. Make sure the backend server is running.></i> Done Checking
+                    </span>
+                </div>
+                <div class="feedback-text">
+                    <h5><i class="fas fa-comment"></i> Professor Feedback</h5>
+                    <p>All files have been analyzed. Check the syntax analyzer for detailed feedback on each file.</p>
+                </div>
             `;
-          });
+      }
+
+      // Close modal on outside click
+      document.getElementById("syntaxModal").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("syntaxModal")) {
+          closeModal();
         }
+      });
 
-        if (data.errors.length === 0 && data.warnings.length === 0) {
-          html +=
-            '<li class="error-item success"><div class="error-message">✨ No syntax errors or warnings found! Perfect code!</div></li>';
+      // Keyboard shortcuts
+      document.addEventListener("keydown", (e) => {
+        if (
+          document.getElementById("syntaxModal").classList.contains("active")
+        ) {
+          if (e.key === "Escape") closeModal();
+          if (e.key === "ArrowLeft") previousFile();
+          if (e.key === "ArrowRight") nextFile();
+          if (e.key === "Enter" && e.ctrlKey) analyzeCurrentFile();
         }
-
-        html += "</ul>";
-
-        // Add raw data for debugging
-        if (data.errors.length > 0 || data.warnings.length > 0) {
-          html += `<details>
-            <summary>🔧 Debug: Show raw error data</summary>
-            <pre>${JSON.stringify(data.errors, null, 2)}</pre>
-        </details>`;
-        }
-
-        errorList.innerHTML = html;
-        results.style.display = "block";
-        results.scrollIntoView({ behavior: "smooth" });
-      }
-
-      function clearCode() {
-        document.getElementById("codeInput").value = "";
-        document.getElementById("results").style.display = "none";
-        updateLineNumbers(); // Reset line numbers
-      }
-
-      function showLoading() {
-        document.getElementById("loading").classList.add("active");
-        document.getElementById("results").style.display = "none";
-      }
-
-      function hideLoading() {
-        document.getElementById("loading").classList.remove("active");
-      }
+      });
     </script>
   </body>
 </html>

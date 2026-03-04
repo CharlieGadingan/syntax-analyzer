@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeTracker - Professor Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="profclass.css">
+    <link rel="icon" type="image/png" href="git.png">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo-container">
+            <div class="logo">
+              <div>
+                <img src="git.png" alt="CodeTracker Logo" class="brand-logo">
+              </div>
+                <div class="logo-text">
+                    <h1>CodeTracker</h1>
+                    <p>GitHub Project Tracking System</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- TOP RIGHT: Professor User Info ONLY (Removed stats) -->
+        <div class="course-info">
+            <div class="professor-user-info">
+                <div class="professor-avatar">IC</div>
+                <div class="professor-details">
+                    <h3>Israel Cabasug</h3>
+                    <p>Professor <span class="professor-badge">Instructor</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Left Column -->
+        <div class="left-column">
+            <!-- Active Assignments -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Active Assignments</h2>
+                </div>
+                
+                <div class="assignment-card">
+                    <h3 class="assignment-title">System 1</h3>
+                    <p class="assignment-description">
+                        Build a full-stack e-commerce platform with user authentication, product catalog, shopping cart, and payment integration.
+                    </p>
+                    
+                    <div class="assignment-details">
+                        <div class="detail-item">
+                            <h4>Due</h4>
+                            <p class="due-date">Feb 15, 2026</p>
+                            <p class="countdown">9 days left</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Submission Rate</h4>
+                            <p>1/1 students</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>1 submission received</h4>
+                            <p>100 points</p>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <span class="progress-title">Submission Progress</span>
+                            <span class="progress-value">100%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students -->
+            <div class="students-section">
+                <div class="students-header">
+                    <h2 class="students-title">Students</h2>
+                    <p class="students-subtitle">Click on a student to view detailed analytics</p>
+                </div>
+              <a href="../templates/index.html" class="student-card-link">
+                  <div class="student-card" id="studentCard">
+                    <div class="student-avatar">DF</div>
+                    <div class="student-info">
+                      <div class="student-name">Dexter Facelo</div>
+                      <div class="student-status">0/1 completed • 1 in progress</div>
+                    </div>
+                    <div class="student-progress">
+                      <div class="progress-circle" id="progressCircle"></div>
+                    </div>
+                  </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="right-column">
+            <!-- Recent Activity -->
+            <div class="activity-section">
+                <h2 class="activity-title">Recent Activity</h2>
+                
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-header">
+                            <div class="activity-avatar">DF</div>
+                            <div class="activity-user">Dexter Facelo</div>
+                        </div>
+                        <p class="activity-text">pushed 5 commits to "Assignment 1"</p>
+                        <p class="activity-time">8 mins ago</p>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-header">
+                            <div class="activity-avatar">IC</div>
+                            <div class="activity-user">Israel Cabasug</div>
+                        </div>
+                        <p class="activity-text">posted a new milestone</p>
+                        <p class="activity-time">1 hour ago</p>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-header">
+                            <div class="activity-avatar">DF</div>
+                            <div class="activity-user">Dexter Facelo</div>
+                        </div>
+                        <p class="activity-text">opened a PR</p>
+                        <p class="activity-time">3 hours ago</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-card">
+                <h2 class="activity-title">Course Stats</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Completion Rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Active Assignments</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">75%</div>
+                        <div class="stat-label">Avg. Score</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">64%</div>
+                        <div class="stat-label">Engagement</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="profclass.js"></script>
+</body>
+</html>

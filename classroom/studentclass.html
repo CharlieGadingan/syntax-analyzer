@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeTracker - GitHub Project Tracking System</title>
+    <link rel="stylesheet" href="studentclass.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="icon" type="image/png" href="git.png" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header with CodeTracker Logo -->
+      <header class="header">
+        <div class="logo-section">
+          <div class="logo-container">
+            <div class="logo-icon">
+              <!-- Your git.png logo -->
+              <img src="git.png" alt="Git Logo" class="git-logo" />
+            </div>
+            <div class="logo-text">
+              <div class="brand-name">CodeTracker</div>
+              <div class="tagline">GitHub Project Tracking System</div>
+            </div>
+          </div>
+        </div>
+        <div class="user-info">
+          <div class="user-avatar">DF</div>
+          <div class="user-details">
+            <h3>Dexter Facelo</h3>
+            <p>SE1-2026 • Developer</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Dashboard Grid -->
+      <main class="dashboard-grid">
+        <!-- Course Section -->
+        <section class="card course-card">
+          <div class="course-section">
+            <div class="course-header">
+              <div class="course-icon">
+                <i class="fas fa-code"></i>
+              </div>
+              <div class="course-info">
+                <h2>Software Engineering 1</h2>
+                <div class="course-meta">
+                  <span class="course-meta-item">
+                    <i class="fas fa-user"></i>
+                    Instructor: Israel Cabasug
+                  </span>
+                  <span class="course-meta-item">
+                    <i class="fas fa-users"></i>
+                    1 student
+                  </span>
+                  <span class="course-meta-item">
+                    <i class="fas fa-tag"></i>
+                    SE1-2026
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <p class="course-description">Description... ewan</p>
+
+            <div class="assignments-section">
+              <h3 class="section-title">Active Assignments</h3>
+
+              <!-- Assignment 1 -->
+              <div class="assignment" data-assignment-id="system1">
+                <div class="assignment-header">
+                  <div>
+                    <div class="assignment-title">
+                      <i class="fas fa-project-diagram"></i>
+                      System 1
+                    </div>
+                    <div class="assignment-desc">
+                      Build a full-stack e-commerce platform with user
+                      authentication, product catalog, shopping cart, and
+                      payment integration.
+                    </div>
+                  </div>
+                  <div class="assignment-status status-due-soon">
+                    <i class="fas fa-clock"></i>
+                    Due Feb 15, 2026
+                  </div>
+                </div>
+
+                <div class="assignment-meta">
+                  <span class="assignment-due">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="days-left">9 days left</span>
+                  </span>
+                  <span>•</span>
+                  <span class="in-progress">
+                    <i class="fas fa-check-circle"></i>
+                    In Progress
+                  </span>
+                  <span>•</span>
+                  <span class="submission-count">
+                    <i class="fas fa-paper-plane"></i>
+                    1 submission received
+                  </span>
+                  <span>•</span>
+                  <span class="points">
+                    <i class="fas fa-star"></i>
+                    100 points
+                  </span>
+                </div>
+
+                <!-- Instructor Feedback Section -->
+                <div class="instructor-feedback" id="feedback-system1" style="display: none;">
+                  <div class="feedback-header">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>Instructor Feedback</span>
+                    <span class="feedback-timestamp"></span>
+                  </div>
+                  <div class="feedback-summary">
+                    <span class="feedback-errors">
+                      <i class="fas fa-times-circle"></i>
+                      <span class="error-count">0</span> Errors
+                    </span>
+                    <span class="feedback-warnings">
+                      <i class="fas fa-exclamation-triangle"></i>
+                      <span class="warning-count">0</span> Warnings
+                    </span>
+                  </div>
+                  <div class="feedback-content">
+                    <div class="feedback-message"></div>
+                    <div class="feedback-details"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="progress-section">
+              <h3 class="section-title">Course Progress</h3>
+
+              <div class="progress-item">
+                <span class="progress-label">Assignments Completed</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 80%"></div>
+                </div>
+                <span class="progress-value">8/10</span>
+              </div>
+
+              <div class="progress-item">
+                <span class="progress-label">Overall Grade</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 88%"></div>
+                </div>
+                <span class="progress-value">88%</span>
+              </div>
+
+              <div class="progress-item">
+                <span class="progress-label">Attendance</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 92%"></div>
+                </div>
+                <span class="progress-value">92%</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Upcoming Deadlines -->
+        <section class="card side-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Upcoming Deadlines</h2>
+              <p class="card-subtitle">Assignments and projects due soon</p>
+            </div>
+          </div>
+
+          <div class="deadlines-list">
+            <div class="deadline-item">
+              <div class="assignment-header">
+                <div class="assignment-title small-title">
+                  <i class="fas fa-code"></i>
+                  System 1 - E-commerce Platform
+                </div>
+                <span class="label label-red">Urgent</span>
+              </div>
+              <div class="assignment-meta">
+                <span class="assignment-due">
+                  <i class="fas fa-clock"></i>
+                  <span class="deadline-date">Due Feb 15, 2026 (9 days)</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="deadline-item">
+              <div class="assignment-header">
+                <div class="assignment-title small-title">
+                  <i class="fas fa-file-code"></i>
+                  Module 3 Quiz
+                </div>
+                <span class="label label-blue">Upcoming</span>
+              </div>
+              <div class="assignment-meta">
+                <span class="assignment-due">
+                  <i class="fas fa-clock"></i>
+                  <span class="deadline-date">Due Feb 20, 2026 (14 days)</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="deadline-item">
+              <div class="assignment-header">
+                <div class="assignment-title small-title">
+                  <i class="fas fa-database"></i>
+                  Database Design Project
+                </div>
+                <span class="label label-blue">Upcoming</span>
+              </div>
+              <div class="assignment-meta">
+                <span class="assignment-due">
+                  <i class="fas fa-clock"></i>
+                  <span class="deadline-date">Due Mar 1, 2026 (23 days)</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <a href="#" class="btn btn-primary" id="newSubmissionBtn">
+              <i class="fas fa-plus"></i>
+              New Submission
+            </a>
+          </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="card side-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Recent Activity</h2>
+              <p class="card-subtitle">Your latest updates and submissions</p>
+            </div>
+          </div>
+
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-avatar success-bg">
+                <i class="fas fa-check"></i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-text">
+                  Submitted System 1 initial draft
+                </div>
+                <div class="activity-meta">
+                  <span class="activity-time">2 hours ago</span>
+                  <span class="label label-green">Submitted</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="activity-item">
+              <div class="activity-avatar accent-bg">
+                <i class="fas fa-comment"></i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-text">
+                  Received feedback on Module 2 assignment
+                </div>
+                <div class="activity-meta">
+                  <span class="activity-time">1 day ago</span>
+                  <span class="label label-blue">Feedback</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="activity-item">
+              <div class="activity-avatar attention-bg">
+                <i class="fas fa-book"></i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-text">
+                  Completed reading: Software Architecture Patterns
+                </div>
+                <div class="activity-meta">
+                  <span class="activity-time">2 days ago</span>
+                  <span class="label label-blue">Resource</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="activity-item">
+              <div class="activity-avatar success-bg">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="activity-content">
+                <div class="activity-text">
+                  Grade updated: Module 1 Quiz (95/100)
+                </div>
+                <div class="activity-meta">
+                  <span class="activity-time">3 days ago</span>
+                  <span class="label label-green">Graded</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="view-all-container">
+            <a href="#" class="btn full-width-btn" id="viewAllActivityBtn">
+              <i class="fas fa-history"></i>
+              View All Activity
+            </a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Submission Modal -->
+    <div class="modal" id="submissionModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>New Project Submission</h2>
+          <span class="close-btn" id="closeModal">&times;</span>
+        </div>
+
+        <form id="submissionForm">
+          <!-- Select Project -->
+          <div class="form-group">
+            <label for="repositorySelect">Select Repository</label>
+            <select id="repositorySelect" required>
+              <option value="">-- Choose Repository --</option>
+              <option value="https://github.com/dexterfacelo/system1">
+                system1-ecommerce
+              </option>
+              <option value="https://github.com/dexterfacelo/module3quiz">
+                module3-quiz
+              </option>
+              <option value="https://github.com/dexterfacelo/database-design">
+                database-design-project
+              </option>
+            </select>
+          </div>
+
+          <!-- GitHub Link -->
+          <div class="form-group">
+            <label for="githubLink">GitHub Repository Link</label>
+            <input
+              type="url"
+              id="githubLink"
+              placeholder="https://github.com/username/repository"
+              required
+            />
+          </div>
+
+          <!-- Note -->
+          <div class="form-group">
+            <label for="submissionNote">Note (Optional)</label>
+            <textarea
+              id="submissionNote"
+              rows="4"
+              placeholder="Add a short note about your submission..."
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary full-width-btn">
+            Submit Project
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="studentclass.js"></script>
+
+    <!-- View All Activity Modal -->
+<div class="modal" id="activityModal">
+  <div class="modal-content large-modal">
+    <div class="modal-header">
+      <h2>All Activity History</h2>
+      <span class="close-btn" id="closeActivityModal">&times;</span>
+    </div>
+
+    <div class="all-activity-list">
+
+      <div class="activity-item">
+        <div class="activity-avatar success-bg">
+          <i class="fas fa-check"></i>
+        </div>
+        <div class="activity-content">
+          <div class="activity-text">
+            Submitted System 1 final version
+          </div>
+          <div class="activity-meta">
+            <span class="activity-time">Just now</span>
+            <span class="label label-green">Submitted</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="activity-item">
+        <div class="activity-avatar accent-bg">
+          <i class="fas fa-comment"></i>
+        </div>
+        <div class="activity-content">
+          <div class="activity-text">
+            Instructor commented on your database design
+          </div>
+          <div class="activity-meta">
+            <span class="activity-time">5 hours ago</span>
+            <span class="label label-blue">Feedback</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="activity-item">
+        <div class="activity-avatar attention-bg">
+          <i class="fas fa-book"></i>
+        </div>
+        <div class="activity-content">
+          <div class="activity-text">
+            Opened Module 3 resources
+          </div>
+          <div class="activity-meta">
+            <span class="activity-time">1 day ago</span>
+            <span class="label label-blue">Resource</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+  </body>
+</html>
